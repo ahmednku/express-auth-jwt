@@ -14,11 +14,12 @@ datasource db {
 }
 
 model User {
-  id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now())
-  name      String
-  email     String   @unique
-  password  String
+  id         Int      @id @default(autoincrement())
+  createdAt  DateTime @default(now())
+  name       String
+  email      String   @unique
+  password   String
+  resetToken String?
 }
 
 model Product {
