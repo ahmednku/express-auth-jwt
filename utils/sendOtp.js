@@ -23,8 +23,6 @@ const sendOtpCode = async (email) => {
       expiresAt: new Date(Date.now() + 300000),
     },
   });
-
-  console.log(`OTP sent to ${email}: ${otp}`);
 };
 
 const verifyOtpCode = async (email, otp) => {
