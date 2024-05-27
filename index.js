@@ -5,6 +5,7 @@ import bodyParser from "body-parser";
 import authRoutes from "./routes/authRoutes.js";
 import productRoutes from "./routes/productRoutes.js";
 import authMiddleware from "./middlewares/authMiddleware.js";
+import "./cron/cleanupExpiredOtps.js";
 dotenv.config();
 const app = express();
 app.use(cors());
