@@ -1,7 +1,7 @@
 export const emailConfig = {
   service: "gmail",
   auth: {
-    user: "ahmadnku2@gmail.com",
-    pass: "wsxe podr bxrd guxg", // not actual password, but rather app password
+    user: process.env.SENDER_EMAIL,
+    pass: process.env.SENDER_PASSWORD,
   },
 };
