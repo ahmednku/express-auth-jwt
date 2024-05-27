@@ -2,6 +2,7 @@ import { PrismaClient } from "@prisma/client";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import sendEmail from "../utils/sendEmail.js";
+import { sendOtpCode, verifyOtpCode } from "../utils/sendOtp.js";
 const prisma = new PrismaClient();
 
 const login = async (req, res) => {
@@ -74,9 +75,31 @@ const getAllUsers = async (req, res) => {
   return res.status(200).json({ users: await prisma.user.findMany() });
 };
 
-const verifyOtp = (req, res) => {
-  const { otp } = req.body;
-  return res.status(200).json({ message: "verifyOtp" });
+const verifyOtp = async (req, res) => {
+  const { email, otp } = req.body;
+  try {
+    const isValid = await verifyOtpCode(email, otp);
+    if (isValid)
+      return res.status(200).json({ message: "OTP verified successfully" });
+    else return res.status(400).json({ message: "Invalid or expired OTP" });
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ message: "Error verifying OTP", error: error.message });
+  }
+};
+
+const sendOtp = async (req, res) => {
+  const { email } = req.body;
+
+  try {
+    await sendOtpCode(email);
+    return res.status(200).json({ message: "OTP sent successfully" });
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ message: "Error sending OTP", error: error.message });
+  }
 };
 
 const generateToken = (id) => {
@@ -89,5 +112,6 @@ export {
   login,
   register,
   resetPassword,
+  sendOtp,
   verifyOtp,
 };
